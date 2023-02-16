@@ -14,16 +14,18 @@ This fork will implement the following features:
 
 Here are the steps to setup a Debian/Ubuntu local environment:
 
-1. Upgrade pip to latest & install [pipx](https://pypi.org/project/pipx/) (requires pip 19.0 or later) or [pipx-in-pipx](https://github.com/mattsb42-meta/pipx-in-pipx):
+1. Upgrade pip to latest & install [pipx](https://pypi.org/project/pipx/) (requires pip 19.0 or later) or [pipx-in-pipx](https://github.com/mattsb42-meta/pipx-in-pipx) (I recommend pipx-in-pipx, if you want to reinstall all other packages `pipx reinstall-all --skip pipx`):
 
     ```bash
+    sudo apt install python3-venv python3-pip
+    # pipx-in-pipx
+    python3 -m pip install pipx-in-pipx --user
+    
+    # pipx
     python3 -m pip install --user pipx
     python3 -m pipx ensurepath
     # Upgrade pipx:
     # python3 -m pip install --user -U pipx
-
-    # pipx-in-pipx
-    python -m pip install pipx-in-pipx --user
     ```
 
 1. Install tox via pipx:
