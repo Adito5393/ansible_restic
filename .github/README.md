@@ -4,11 +4,11 @@ See the original [README.md](../README.md) for usage & other details.
 
 This fork will implement the following features:
 
-- Add docs on How to develop/contribute
-- Run restic as non-root, following the [docs recommendations](https://restic.readthedocs.io/en/stable/080_examples.html#backing-up-your-system-without-running-restic-as-root).
+- [ ] Add docs on How to develop/contribute
+- [x] Run restic as non-root, following the [docs recommendations](https://restic.readthedocs.io/en/stable/080_examples.html#backing-up-your-system-without-running-restic-as-root).
    I don't plan to create the user within this role.
-- Add `ExecStartPre=` & `ExecStartPost=` to the systemd_service.unit as a list of commands that a user can pass as a list. If the user calls a bash file, then this should already be available on the system (with the correct permissions).
-- Add the ability to [set the GOMAXPROCS in the backup script](https://github.com/arillso/ansible.restic/issues/109).
+- [ ] Add `ExecStartPre=` & `ExecStartPost=` to the systemd_service.unit as a list of commands that a user can pass as a list. If the user calls a bash file, then this should already be available on the system (with the correct permissions). Use case: stop a service before backing up & start it after it finishes it.
+- [ ] Add the ability to [set the GOMAXPROCS in the backup script](https://github.com/arillso/ansible.restic/issues/109).
 
 ## How to develop
 
@@ -20,7 +20,7 @@ Here are the steps to setup a Debian/Ubuntu local environment:
     sudo apt install python3-venv python3-pip
     # pipx-in-pipx
     python3 -m pip install pipx-in-pipx --user
-    
+
     # pipx
     python3 -m pip install --user pipx
     python3 -m pipx ensurepath
