@@ -89,3 +89,19 @@
     capability: cap_dac_read_search=+ep
     state: present
   when: restic_non_root_setup | bool
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  when:
+    - restic_bash_completion | bool
+
+- name: Generate the completion file when bash-completion is installed
+  ansible.builtin.shell: |
+    {{ restic_bin_bath }} generate --bash-completion {{ restic_bash_completion_file }}
+  register: restic_completion
+  changed_when: restic_completion.rc == 0
+  when:
+    - restic_bash_completion | bool
+    - "'bash-completion' in ansible_facts.packages"
+    - restic_install_cmd.rc == 0

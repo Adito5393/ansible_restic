@@ -2,6 +2,9 @@
 # defaults file for skeleton
 restic_url: '{{ restic_url_default }}'
 restic_version: '0.16.0'
+# https://restic.readthedocs.io/en/latest/020_installation.html#autocompletion
+restic_bash_completion: true
+restic_bash_completion_file: /usr/share/bash-completion/completions/restic
 restic_download_path: '/opt/restic'
 restic_install_path: '/usr/bin'
 restic_cache_dir: /var/cache/restic

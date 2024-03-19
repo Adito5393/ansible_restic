@@ -60,6 +60,7 @@
         - sudo
         - libcap2-bin  # required for setcap cap_dac_read_search=+ep
         - acl  # needed to run 1 task with become_user: "{{ restic_non_root_setup_user }}"
+        - bash-completion
   vars:
     restic_skip_handlers: true
     restic_prometheus_exporter_enabled: false
