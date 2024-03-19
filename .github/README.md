@@ -13,7 +13,46 @@ This fork will implement the following features:
 
 Check out the files changed summary via the [complete comparison](https://github.com/Mikroways/ansible_restic/compare/main...Adito5393:ansible_restic:dev) between the original fork and this branch.
 
-## Examples ExecStartPre and ExecStartPost
+## How to use
+
+Add the version you want (e.g. `1.0.0`) to use inside your `requirements.yml` file (see the [Ansible docs](https://docs.ansible.com/ansible/latest/galaxy/user_guide.html#installing-roles-and-collections-from-the-same-requirements-yml-file) for more info about installing roles):
+
+```yml
+collections:
+...
+roles:
+  - name: adrlzr.ansible_restic
+    src: https://github.com/Adito5393/ansible_restic
+    version: 1.0.0
+    # Or use the latest version from the branch:
+    # version: dev
+```
+
+And run: `ansible-galaxy install -r ./requirements.yml`
+
+And use it inside your playbook:
+
+```yml
+- name: Setup Restic
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Pre-run | update package cache (debian, etc)
+      tags: always
+      ansible.builtin.apt:
+        update_cache: true
+      changed_when: false
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+  tasks:
+    - name: Provision Restic
+      tags: restic
+      ansible.builtin.import_role:
+        name: adrlzr.ansible_restic
+```
+
+### Examples ExecStartPre and ExecStartPost
 
 Given the following vars defined:
 ```yml
