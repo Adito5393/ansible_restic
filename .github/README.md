@@ -4,12 +4,47 @@ See the original [README.md](../README.md) for usage & other details.
 
 This fork will implement the following features:
 
-- [ ] Add docs on How to develop/contribute
+- [x] Add docs on How to develop
 - [x] Run restic as non-root, following the [docs recommendations](https://restic.readthedocs.io/en/stable/080_examples.html#backing-up-your-system-without-running-restic-as-root).
    I don't plan to create the user within this role.
-- [ ] Add `ExecStartPre=` & `ExecStartPost=` to the systemd_service.unit as a list of commands that a user can pass as a list. If the user calls a bash file, then this should already be available on the system (with the correct permissions). Use case: stop a service before backing up & start it after it finishes it.
+- [x] Add `ExecStartPre=` & `ExecStartPost=` to the systemd_service.unit as a list of commands that a user can pass as a list. If the user calls a bash file, then this should already be available on the system (with the correct permissions). Use case: stop a service before backing up & start it after it finishes it.
 - [x] Add the ability to [set the GOMAXPROCS in the backup script](https://github.com/arillso/ansible.restic/issues/109).
 - [x] Add the [bash-completion file](https://restic.readthedocs.io/en/latest/020_installation.html#autocompletion) if package is installed.
+
+Check out the files changed summary via the [complete comparison](https://github.com/Mikroways/ansible_restic/compare/main...Adito5393:ansible_restic:dev) between the original fork and this branch.
+
+## Examples ExecStartPre and ExecStartPost
+
+Given the following vars defined:
+```yml
+restic_backups:
+  - name: opt_stuff
+    src: /opt
+    repo: local
+    init: true
+    restic_systemd_service_pre:
+      - /usr/bin/echo "This is the command before systemd starts."
+      - /usr/bin/echo "This is the 2nd command before systemd starts."
+    restic_systemd_service_post:
+      - /usr/bin/echo "This is the command AFTER systemd service finishes."
+```
+
+It will generate this part of systemd service:
+
+```bash
+cat /etc/systemd/system/restic-opt_stuff.service
+
+[Unit]
+...
+[Service]
+...
+ExecStartPre=/usr/bin/echo "This is the command before systemd starts."
+ExecStartPre=/usr/bin/echo "This is the 2nd command before systemd starts."
+ExecStartPost=/usr/bin/echo "This is the command AFTER systemd service finishes."
+```
+
+Check the manual for more info about [ExecStartPre= and ExecStartPost=](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#ExecStartPre=).
+
 
 ## How to develop
 

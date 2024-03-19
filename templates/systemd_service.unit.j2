@@ -20,6 +20,16 @@ AmbientCapabilities=cap_dac_read_search
 ExecStart={{ restic_script_dir }}/backup-{{ item.name }}.sh {{ item.restic_extra_args | default('') }}
 Restart=on-failure
 RestartSec=30
+{% if item.restic_systemd_service_pre is defined and item.restic_systemd_service_pre | length %}
+{% for cmd in item.restic_systemd_service_pre %}
+ExecStartPre={{ cmd }}
+{% endfor %}
+{% endif %}
+{% if item.restic_systemd_service_post is defined and item.restic_systemd_service_post | length %}
+{% for cmd in item.restic_systemd_service_post %}
+ExecStartPost={{ cmd }}
+{% endfor %}
+{% endif %}
 
 # Security hardening (see man 7 systemd.exec)
 PrivateTmp=true

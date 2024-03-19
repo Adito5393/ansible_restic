@@ -82,6 +82,11 @@
         keep_tag: deployment
         schedules:
           - "*-*-* 00:00:00"
+        restic_systemd_service_pre:
+          - /usr/bin/echo "This is the command before systemd starts."
+          - /usr/bin/echo "This is the 2nd command before systemd starts."
+        restic_systemd_service_post:
+          - /usr/bin/echo "This is the command AFTER systemd service finishes."
     restic_non_root_setup: true
     restic_non_root_setup_user: restic
     restic_dir_owner: restic
