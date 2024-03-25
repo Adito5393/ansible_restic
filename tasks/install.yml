@@ -1,5 +1,5 @@
 ---
-- name: Download restic withouth verified checksum file
+- name: Download restic without verified checksum file
   ansible.builtin.get_url:
     url: '{{ restic_url }}'
     dest: '{{ restic_download_path }}/restic.bz2'
@@ -73,13 +73,20 @@
     force: true
   when: not restic_non_root_setup | bool
 
+- name: Ensure acl is available (for ansible become_user execution)
+  ansible.builtin.package:
+    state: present
+    name:
+      - acl
+  when: restic_non_root_setup | bool
+
 - name: Create symbolic link to the correct version (non-root setup)
   ansible.builtin.file:
     src: '{{ restic_download_path }}/bin/restic-{{ restic_version }}'
     path: '{{ restic_install_path }}/restic'
     state: link
     mode: '0750'
-  become_user: "{{ restic_non_root_setup_user }}"  # THIS NEEDS apt install acl
+  become_user: "{{ restic_non_root_setup_user }}"
   when: restic_non_root_setup | bool
 
 # If this module fails, replace it with command: setcap cap_dac_read_search=+ep
